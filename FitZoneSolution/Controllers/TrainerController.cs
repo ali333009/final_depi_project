@@ -205,11 +205,18 @@ public class TrainerController : Controller
         var member = await _db.Members.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == memberId);
         if (member == null) return NotFound();
 
-        var progress = await _db.ProgressRecords
+        var progressRecords = await _db.ProgressRecords
             .Where(p => p.MemberId == memberId)
             .OrderByDescending(p => p.Date)
-            .Select(p => new ProgressPointVM { Date = p.Date, Weight = p.Weight, BodyFat = p.BodyFat, Notes = p.Notes })
             .ToListAsync();
+
+        var progress = progressRecords.Select(p => new ProgressPointVM
+        {
+            Date = p.Date,
+            Weight = p.Weight,
+            BodyFat = p.BodyFat,
+            Notes = p.Notes
+        }).ToList();
 
         return View(new MemberProgressVM
         {

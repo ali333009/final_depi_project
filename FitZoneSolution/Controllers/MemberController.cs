@@ -83,12 +83,13 @@ public class MemberController : Controller
                 StartTime = sc.StartTime,
                 EndTime = sc.EndTime
             })).OrderBy(c => c.DayOfWeek).ToList(),
-            RecentProgress = await _db.ProgressRecords
+            RecentProgress = (await _db.ProgressRecords
                 .Where(p => p.MemberId == member.Id)
                 .OrderByDescending(p => p.Date)
                 .Take(10)
+                .ToListAsync())
                 .Select(p => new ProgressPointVM { Date = p.Date, Weight = p.Weight, BodyFat = p.BodyFat, Notes = p.Notes })
-                .ToListAsync(),
+                .ToList(),
             TrainerName = assignment?.Trainer?.User?.Name,
             TrainerSpecialization = assignment?.Trainer?.Specialization
         };
@@ -276,11 +277,18 @@ public class MemberController : Controller
         var member = await GetCurrentMemberAsync();
         if (member == null) return NotFound();
 
-        var history = await _db.ProgressRecords
+        var records = await _db.ProgressRecords
             .Where(p => p.MemberId == member.Id)
             .OrderByDescending(p => p.Date)
-            .Select(p => new ProgressPointVM { Date = p.Date, Weight = p.Weight, BodyFat = p.BodyFat, Notes = p.Notes })
             .ToListAsync();
+
+        var history = records.Select(p => new ProgressPointVM
+        {
+            Date = p.Date,
+            Weight = p.Weight,
+            BodyFat = p.BodyFat,
+            Notes = p.Notes
+        }).ToList();
 
         return View(new MyProgressVM { History = history });
     }
@@ -288,27 +296,37 @@ public class MemberController : Controller
     // POST /Member/AddProgress
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddProgress(AddProgressVM model)
+    public async Task<IActionResult> AddProgress(MyProgressVM model)
     {
         var member = await GetCurrentMemberAsync();
         if (member == null) return NotFound();
 
+        var entry = model.NewEntry;
         if (!ModelState.IsValid)
         {
-            var history = await _db.ProgressRecords
+            var records = await _db.ProgressRecords
                 .Where(p => p.MemberId == member.Id)
                 .OrderByDescending(p => p.Date)
-                .Select(p => new ProgressPointVM { Date = p.Date, Weight = p.Weight, BodyFat = p.BodyFat, Notes = p.Notes })
                 .ToListAsync();
-            return View("MyProgress", new MyProgressVM { History = history, NewEntry = model });
+
+            var history = records.Select(p => new ProgressPointVM
+            {
+                Date = p.Date,
+                Weight = p.Weight,
+                BodyFat = p.BodyFat,
+                Notes = p.Notes
+            }).ToList();
+
+            model.History = history;
+            return View("MyProgress", model);
         }
 
         _db.ProgressRecords.Add(new ProgressTracking
         {
             MemberId = member.Id,
-            Weight = model.Weight,
-            BodyFat = model.BodyFat,
-            Notes = model.Notes,
+            Weight = entry!.Weight,
+            BodyFat = entry.BodyFat,
+            Notes = entry.Notes,
             Date = DateTime.UtcNow
         });
         await _db.SaveChangesAsync();
