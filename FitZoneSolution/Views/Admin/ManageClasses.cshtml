@@ -1,0 +1,80 @@
+@model List<FitZone.Models.Entities.GymClass>
+@{ ViewData["Title"] = "Classes"; }
+
+<div class="page-header">
+    <div>
+        <div class="hero-badge mb-1">ADMIN PANEL</div>
+        <h2 class="page-header-title"><span class="text-gradient-orange">CLASSES</span></h2>
+        <p class="text-muted-fz">@(ViewBag.TotalCount ?? Model.Count) class@((ViewBag.TotalCount ?? Model.Count) != 1 ? "es" : "")</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-controller="Admin" asp-action="Schedule" class="btn btn-outline-fz px-4 py-2 fw-semibold">SCHEDULE</a>
+        <a asp-controller="Admin" asp-action="CreateClass" class="btn btn-accent px-4 py-2 fw-semibold">NEW CLASS</a>
+    </div>
+</div>
+
+<form method="get" asp-action="ManageClasses" class="mb-4">
+    <div class="input-group">
+        <span class="input-group-text bg-card border-0 text-muted-fz"><i class="bi bi-search"></i></span>
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control bg-card border-0 text-white"
+               placeholder="Search by class name or trainer..." autocomplete="off" />
+        @if (!string.IsNullOrEmpty((string?)ViewBag.Search))
+        {
+            <a asp-action="ManageClasses" class="btn btn-outline-fz">Clear</a>
+        }
+        <button type="submit" class="btn btn-accent">Search</button>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="card bg-card">
+        <div class="text-center py-5">
+            <p class="text-muted-fz mb-0">@(ViewBag.Search != null ? "No classes match your search" : "No classes yet")</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var c in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card bg-card h-100">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h4 class="fw-bold mb-1">@c.ClassName</h4>
+                                <div class="d-flex align-items-center gap-2 small text-muted-fz">
+                                    <i class="bi bi-person"></i>
+                                    @c.Trainer.User.Name
+                                </div>
+                            </div>
+                            <span class="pill">@c.Duration min</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="glass rounded-3 px-3 py-2 small text-center">
+                                <div class="fw-bold text-gradient-orange">@c.Capacity</div>
+                                <div class="text-muted-fz" style="font-size:0.65rem;">CAPACITY</div>
+                            </div>
+                            <div class="glass rounded-3 px-3 py-2 small text-center">
+                                <div class="fw-bold">@c.Duration</div>
+                                <div class="text-muted-fz" style="font-size:0.65rem;">MINUTES</div>
+                            </div>
+                        </div>
+                        <div class="mt-auto d-flex gap-2">
+                            <a asp-controller="Admin" asp-action="EditClass" asp-route-id="@c.Id" class="btn btn-outline-fz flex-fill py-2 fw-semibold">Edit</a>
+                            <form asp-controller="Admin" asp-action="DeleteClass" asp-route-id="@c.Id" method="post" class="flex-fill"
+                                  onsubmit="return confirm('Remove this class?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger w-100 py-2 fw-semibold">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<partial name="_Pagination" />

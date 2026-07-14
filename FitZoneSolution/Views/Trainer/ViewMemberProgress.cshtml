@@ -1,0 +1,59 @@
+@model MemberProgressVM
+@{ ViewData["Title"] = $"Progress - {Model.MemberName}"; }
+
+<div class="page-header text-center">
+    <span class="hero-badge"><i class="bi bi-person-badge me-1"></i> TRAINER PORTAL</span>
+    <h2 class="page-header-title" data-reveal><span class="text-gradient-orange">@Model.MemberName</span>'s PROGRESS</h2>
+    <p class="text-muted-fz" data-reveal>Tracking data for your assigned member</p>
+</div>
+
+@if (!Model.Progress.Any())
+{
+    <div class="text-center py-5" data-reveal>
+        <i class="bi bi-graph-up display-1 text-muted-fz"></i>
+        <h4 class="fw-bold mt-3">No Progress Data</h4>
+        <p class="text-muted-fz" style="max-width:400px;margin:0 auto;">
+            This member hasn't recorded any progress yet.
+        </p>
+    </div>
+}
+else
+{
+    <div class="card bg-card" data-reveal>
+        <div class="card-body p-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-clock-history text-accent me-2"></i>Progress History (@Model.Progress.Count entries)</h5>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Weight</th>
+                            <th>Body Fat</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.Progress)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@p.Date.ToString("MMM dd, yyyy")</td>
+                                <td class="fw-bold text-gradient-orange">@p.Weight <span class="small text-muted-fz fw-normal">kg</span></td>
+                                <td>
+                                    @if (p.BodyFat != null)
+                                    {
+                                        <span>@p.BodyFat%</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted-fz">-</span>
+                                    }
+                                </td>
+                                <td class="text-muted-fz small">@(p.Notes ?? "-")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

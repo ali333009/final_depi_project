@@ -1,0 +1,56 @@
+@model ClassFormVM
+@{
+    ViewData["Title"] = Model.Id == null ? "New Class" : "Edit Class";
+    var isEdit = Model.Id != null;
+}
+
+<div class="page-header text-center">
+    <div class="hero-badge mb-2">@(isEdit ? "EDIT CLASS" : "NEW CLASS")</div>
+    <h2 class="page-header-title">@(isEdit ? "Edit Class" : "Create New Class")</h2>
+    <p class="text-muted-fz">@(isEdit ? "Update class details" : "Add a new class to the schedule")</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card bg-card">
+            <div class="card-body p-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                <form asp-controller="Admin" asp-action="@(isEdit ? "EditClass" : "CreateClass")" asp-route-id="@Model.Id" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label asp-for="ClassName" class="form-label small fw-semibold">Class Name</label>
+                        <input asp-for="ClassName" class="form-control" placeholder="e.g. HIIT Blast" />
+                        <span asp-validation-for="ClassName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TrainerId" class="form-label small fw-semibold">Trainer</label>
+                        <select asp-for="TrainerId" class="form-select">
+                            @foreach (var t in Model.AvailableTrainers)
+                            {
+                                <option value="@t.Id">@t.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Capacity" class="form-label small fw-semibold">Capacity</label>
+                        <input asp-for="Capacity" class="form-control" type="number" placeholder="e.g. 20" min="1" max="200" />
+                        <span asp-validation-for="Capacity" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Duration" class="form-label small fw-semibold">Duration (minutes)</label>
+                        <input asp-for="Duration" class="form-control" type="number" placeholder="e.g. 45" min="15" max="180" />
+                        <span asp-validation-for="Duration" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-accent w-100 py-2 fw-semibold">
+                        @(isEdit ? "UPDATE CLASS" : "CREATE CLASS")
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

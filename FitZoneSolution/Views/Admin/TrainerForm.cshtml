@@ -1,0 +1,53 @@
+@model TrainerFormVM
+@{
+    ViewData["Title"] = Model.TrainerId == null ? "New Trainer" : "Edit Trainer";
+    var isEdit = Model.TrainerId != null;
+}
+
+<div class="page-header text-center">
+    <div class="hero-badge mb-2">@(isEdit ? "EDIT TRAINER" : "NEW TRAINER")</div>
+    <h2 class="page-header-title">@(isEdit ? "Edit Trainer" : "Create New Trainer")</h2>
+    <p class="text-muted-fz">@(isEdit ? "Update trainer details" : "Add a new trainer to the team")</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card bg-card">
+            <div class="card-body p-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                <form asp-controller="Admin" asp-action="@(isEdit ? "EditTrainer" : "CreateTrainer")"
+                      asp-route-id="@Model.TrainerId" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label small fw-semibold">Full Name</label>
+                        <input asp-for="Name" class="form-control" placeholder="Full name" />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label small fw-semibold">Email Address</label>
+                        <input asp-for="Email" class="form-control" placeholder="email@example.com" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Specialization" class="form-label small fw-semibold">Specialization</label>
+                        <input asp-for="Specialization" class="form-control" placeholder="e.g. Strength & Conditioning" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Password" class="form-label small fw-semibold">
+                            @(isEdit ? "New Password (leave blank to keep current)" : "Password")
+                        </label>
+                        <input asp-for="Password" class="form-control" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+                    </div>
+
+                    <button type="submit" class="btn btn-accent w-100 py-2 fw-semibold">
+                        @(isEdit ? "UPDATE TRAINER" : "CREATE TRAINER")
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

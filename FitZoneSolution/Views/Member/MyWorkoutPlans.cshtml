@@ -1,0 +1,49 @@
+@model MyWorkoutPlansVM
+@{ ViewData["Title"] = "My Workout Plans"; }
+
+<div class="page-header text-center">
+    <span class="hero-badge"><i class="bi bi-journal-text me-1"></i> TRAINING</span>
+    <h2 class="page-header-title" data-reveal>MY <span class="text-gradient-orange">WORKOUT</span> PLANS</h2>
+    <p class="text-muted-fz" data-reveal>Training programs assigned by your coach</p>
+</div>
+
+@if (!Model.Plans.Any())
+{
+    <div class="text-center py-5" data-reveal>
+        <i class="bi bi-journal-x display-1 text-muted-fz"></i>
+        <h4 class="fw-bold mt-3">No Workout Plans Yet</h4>
+        <p class="text-muted-fz" style="max-width:400px;margin:0 auto;">
+            Your coach hasn't assigned any workout plans yet. Check back later or contact your coach.
+        </p>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var plan in Model.Plans)
+        {
+            <div class="col-lg-8 mx-auto" data-reveal>
+                <div class="card bg-card h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h5 class="fw-bold mb-1">Workout Plan</h5>
+                                <div class="d-flex align-items-center gap-2 small text-muted-fz">
+                                    <i class="bi bi-person-badge"></i>
+                                    <span>Coach: <strong>@plan.TrainerName</strong></span>
+                                </div>
+                            </div>
+                            <span class="badge badge-accent">
+                                <i class="bi bi-calendar3 me-1"></i>@plan.AssignedDate.ToString("MMM dd, yyyy")
+                            </span>
+                        </div>
+                        <div class="glass rounded-3 p-4">
+                            <div class="small fw-semibold mb-2 text-gradient-orange">PLAN DETAILS</div>
+                            <div class="text-muted-fz" style="white-space:pre-wrap;line-height:1.7;">@plan.PlanDetails</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

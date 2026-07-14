@@ -1,0 +1,179 @@
+@model FitZone.Models.ViewModels.AdminDashboardVM
+@{ ViewData["Title"] = "Admin Dashboard"; }
+
+<div class="page-header mb-0">
+    <div>
+        <div class="hero-badge mb-1">ADMIN PANEL</div>
+        <h2 class="page-header-title"><span class="text-gradient-orange">DASHBOARD</span></h2>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-4 col-md-6">
+        <div class="card bg-card h-100">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-people fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fs-2 fw-bold text-gradient-orange mb-0">@Model.TotalMembers</div>
+                    <div class="text-muted-fz small">Members</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="card bg-card h-100">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-person-badge fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fs-2 fw-bold text-gradient-orange mb-0">@Model.TotalTrainers</div>
+                    <div class="text-muted-fz small">Trainers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="card bg-card h-100">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-calendar-check fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fs-2 fw-bold text-gradient-orange mb-0">@Model.ActiveSubscriptions</div>
+                    <div class="text-muted-fz small">Active Subscriptions</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row g-4 mb-4">
+    <div class="col-lg-4 col-md-6">
+        <div class="card bg-card h-100">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-currency-dollar fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fs-2 fw-bold text-gradient-orange mb-0">@Model.TotalRevenue.ToString("C")</div>
+                    <div class="text-muted-fz small">Total Revenue</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="card bg-card h-100">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-grid fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fs-2 fw-bold text-gradient-orange mb-0">@Model.ClassesCount</div>
+                    <div class="text-muted-fz small">Classes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="card bg-card h-100">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-bookmark-check fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fs-2 fw-bold text-gradient-orange mb-0">@Model.BookingsThisMonth</div>
+                    <div class="text-muted-fz small">Bookings This Month</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-4 col-md-6">
+        <a asp-action="ManageMembers" class="card bg-card h-100 text-decoration-none">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-people fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fw-bold text-white fs-5 mb-0">Members</div>
+                    <div class="text-muted-fz small">Manage members</div>
+                </div>
+                <i class="bi bi-chevron-right ms-auto text-muted-fz"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <a asp-action="ManageTrainers" class="card bg-card h-100 text-decoration-none">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-person-badge fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fw-bold text-white fs-5 mb-0">Trainers</div>
+                    <div class="text-muted-fz small">Manage trainers</div>
+                </div>
+                <i class="bi bi-chevron-right ms-auto text-muted-fz"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <a asp-action="ManageSubscriptions" class="card bg-card h-100 text-decoration-none">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-calendar-check fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fw-bold text-white fs-5 mb-0">Subscriptions</div>
+                    <div class="text-muted-fz small">Manage subscriptions</div>
+                </div>
+                <i class="bi bi-chevron-right ms-auto text-muted-fz"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <a asp-action="ManageClasses" class="card bg-card h-100 text-decoration-none">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-grid fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fw-bold text-white fs-5 mb-0">Classes</div>
+                    <div class="text-muted-fz small">Manage classes</div>
+                </div>
+                <i class="bi bi-chevron-right ms-auto text-muted-fz"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <a asp-action="ManagePlans" class="card bg-card h-100 text-decoration-none">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-tags fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fw-bold text-white fs-5 mb-0">Plans</div>
+                    <div class="text-muted-fz small">Manage plans</div>
+                </div>
+                <i class="bi bi-chevron-right ms-auto text-muted-fz"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <a asp-action="Reports" class="card bg-card h-100 text-decoration-none">
+            <div class="card-body p-4 d-flex align-items-center gap-3">
+                <div class="glass rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                    <i class="bi bi-bar-chart-line fs-4 text-gradient-orange"></i>
+                </div>
+                <div>
+                    <div class="fw-bold text-white fs-5 mb-0">Reports</div>
+                    <div class="text-muted-fz small">View analytics</div>
+                </div>
+                <i class="bi bi-chevron-right ms-auto text-muted-fz"></i>
+            </div>
+        </a>
+    </div>
+</div>

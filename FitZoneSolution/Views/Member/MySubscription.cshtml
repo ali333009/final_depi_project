@@ -1,0 +1,160 @@
+@model SubscriptionHistoryVM
+@{
+    ViewData["Title"] = "My Subscription";
+    var active = ViewBag.ActiveSubscription as MySubscriptionVM;
+}
+
+<div class="page-header text-center">
+    <span class="hero-badge"><i class="bi bi-credit-card me-1"></i> MEMBERSHIP</span>
+    <h2 class="page-header-title" data-reveal>MY <span class="text-gradient-orange">SUBSCRIPTION</span></h2>
+    <p class="text-muted-fz" data-reveal>Manage your membership and view payment history</p>
+</div>
+
+@if (active != null)
+{
+    <div class="row g-4 mb-4">
+        <div class="col-md-4" data-reveal>
+            <div class="card bg-card h-100">
+                <div class="card-body p-4 text-center">
+                    <div class="text-muted-fz small mb-1">Current Plan</div>
+                    <h3 class="fw-bold text-gradient-orange mb-0">@active.PlanName</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" data-reveal>
+            <div class="card bg-card h-100">
+                <div class="card-body p-4 text-center">
+                    <div class="text-muted-fz small mb-1">Days Remaining</div>
+                    <h3 class="fw-bold mb-0 @(active.DaysRemaining <= 7 ? "text-rose" : "text-gradient-orange")">
+                        @active.DaysRemaining <span class="small text-muted-fz fw-normal">days</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" data-reveal>
+            <div class="card bg-card h-100">
+                <div class="card-body p-4 text-center">
+                    <div class="text-muted-fz small mb-1">Status</div>
+                    <h3 class="fw-bold mb-0"><span class="badge badge-emerald fs-6">@active.Status</span></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card bg-card mb-4" data-reveal>
+        <div class="card-body p-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-calendar-check text-accent me-2"></i>Subscription Details</h5>
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <div class="text-muted-fz small">Start Date</div>
+                    <div class="fw-semibold">@active.StartDate.ToString("MMM dd, yyyy")</div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-muted-fz small">End Date</div>
+                    <div class="fw-semibold">@active.EndDate.ToString("MMM dd, yyyy")</div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-muted-fz small">Duration</div>
+                    <div class="fw-semibold">@active.DurationMonths month(s)</div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-muted-fz small">Price</div>
+                    <div class="fw-semibold text-gradient-orange">@active.Price.ToString("C")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (active.Payments.Any())
+    {
+        <div class="card bg-card mb-4" data-reveal>
+            <div class="card-body p-4">
+                <h5 class="fw-bold mb-3"><i class="bi bi-receipt text-accent me-2"></i>Payment History</h5>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var p in active.Payments)
+                            {
+                                <tr>
+                                    <td>@p.PaymentDate.ToString("MMM dd, yyyy")</td>
+                                    <td class="fw-bold text-gradient-orange">@p.Amount.ToString("C")</td>
+                                    <td><span class="badge badge-accent">@p.Method</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="text-center py-5" data-reveal>
+        <i class="bi bi-credit-card-2-front display-1 text-muted-fz"></i>
+        <h4 class="fw-bold mt-3">No Active Subscription</h4>
+        <p class="text-muted-fz" style="max-width:400px;margin:0 auto 1.5rem;">
+            You don't have an active subscription. Subscribe now to start booking classes and tracking your progress.
+        </p>
+        <a asp-controller="Member" asp-action="Subscribe" class="btn btn-accent px-4 py-2 fw-semibold">
+            <i class="bi bi-plus-circle me-2"></i>Subscribe Now
+        </a>
+    </div>
+}
+
+@if (Model.Subscriptions.Any())
+{
+    <div class="card bg-card" data-reveal>
+        <div class="card-body p-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-clock-history text-accent me-2"></i>Past Subscriptions</h5>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Plan</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Status</th>
+                            <th>Paid</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in Model.Subscriptions)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@s.PlanName</td>
+                                <td>@s.StartDate.ToString("MMM dd, yyyy")</td>
+                                <td>@s.EndDate.ToString("MMM dd, yyyy")</td>
+                                <td>
+                                    @switch (s.Status)
+                                    {
+                                        case "Active":
+                                            <span class="badge badge-emerald">Active</span>
+                                            break;
+                                        case "Expired":
+                                            <span class="badge badge-muted">Expired</span>
+                                            break;
+                                        case "Cancelled":
+                                            <span class="badge badge-rose">Cancelled</span>
+                                            break;
+                                        default:
+                                            <span class="badge badge-muted">@s.Status</span>
+                                            break;
+                                    }
+                                </td>
+                                <td class="fw-bold text-gradient-orange">@s.AmountPaid.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,78 @@
+@model BookingHistoryVM
+@{ ViewData["Title"] = "Booking History"; }
+
+<div class="page-header text-center">
+    <span class="hero-badge"><i class="bi bi-clock-history me-1"></i> HISTORY</span>
+    <h2 class="page-header-title" data-reveal>BOOKING <span class="text-gradient-orange">HISTORY</span></h2>
+    <p class="text-muted-fz" data-reveal>All your class bookings in one place</p>
+</div>
+
+@if (!Model.Bookings.Any())
+{
+    <div class="text-center py-5" data-reveal>
+        <i class="bi bi-calendar-x display-1 text-muted-fz"></i>
+        <h4 class="fw-bold mt-3">No Bookings Yet</h4>
+        <p class="text-muted-fz" style="max-width:400px;margin:0 auto 1.5rem;">
+            You haven't booked any classes yet. Start by browsing available classes.
+        </p>
+        <a asp-controller="Member" asp-action="BookClass" class="btn btn-accent px-4 py-2 fw-semibold">
+            <i class="bi bi-plus-circle me-2"></i>Book a Class
+        </a>
+    </div>
+}
+else
+{
+    <div class="card bg-card" data-reveal>
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table mb-0 align-middle">
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Trainer</th>
+                            <th>Schedule</th>
+                            <th>Booked On</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var b in Model.Bookings)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@b.ClassName</td>
+                                <td class="text-muted-fz">@b.TrainerName</td>
+                                <td>
+                                    @foreach (var s in b.Schedule)
+                                    {
+                                        <span class="badge badge-accent me-1 mb-1" style="font-size:0.7rem;">@s</span>
+                                    }
+                                </td>
+                                <td class="text-muted-fz small">@b.BookingDate.ToString("MMM dd, yyyy")</td>
+                                <td>
+                                    @switch (b.Status)
+                                    {
+                                        case "Confirmed":
+                                            <span class="badge badge-emerald">Confirmed</span>
+                                            break;
+                                        case "Attended":
+                                            <span class="badge badge-accent">Attended</span>
+                                            break;
+                                        case "Cancelled":
+                                            <span class="badge badge-rose">Cancelled</span>
+                                            break;
+                                        case "NoShow":
+                                            <span class="badge badge-amber">No Show</span>
+                                            break;
+                                        default:
+                                            <span class="badge badge-muted">@b.Status</span>
+                                            break;
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,86 @@
+@model AttendanceVM
+@{ ViewData["Title"] = "Attendance"; }
+
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4" data-reveal>
+    <div>
+        <span class="hero-badge"><i class="bi bi-person-workspace me-1"></i> TRAINER PORTAL</span>
+        <h2 class="display-3 mb-1"><span class="text-gradient-orange">ATTENDANCE</span></h2>
+        <p class="text-muted-fz mb-0">@Model.ClassName</p>
+    </div>
+</div>
+
+@if (!Model.Rows.Any())
+{
+    <div class="card bg-card" data-reveal>
+        <div class="text-center py-5">
+            <i class="bi bi-clipboard-x text-muted-fz d-block mb-2" style="font-size:2rem;"></i>
+            <p class="text-muted-fz mb-0">No bookings yet for this class</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card bg-card" data-reveal>
+        <div class="table-responsive">
+            <table class="table mb-0 align-middle">
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Status</th>
+                        <th class="text-end">Mark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var row in Model.Rows)
+                {
+                    <tr>
+                        <td class="fw-semibold">@row.MemberName</td>
+                        <td>
+                            @switch (row.Status)
+                            {
+                                case "Confirmed":
+                                    <span class="badge badge-amber">Confirmed</span>
+                                    break;
+                                case "Attended":
+                                    <span class="badge badge-emerald"><i class="bi bi-check-lg"></i> Attended</span>
+                                    break;
+                                case "NoShow":
+                                    <span class="badge badge-rose"><i class="bi bi-x-lg"></i> No-show</span>
+                                    break;
+                                case "Cancelled":
+                                    <span class="badge badge-muted">Cancelled</span>
+                                    break;
+                                default:
+                                    <span class="badge badge-muted">@row.Status</span>
+                                    break;
+                            }
+                        </td>
+                        <td class="text-end">
+                            @if (row.Status == "Confirmed")
+                            {
+                                <form asp-controller="Trainer" asp-action="MarkAttendance" method="post" class="d-inline-flex gap-1">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="bookingId" value="@row.BookingId" />
+                                    <input type="hidden" name="classId" value="@Model.ClassId" />
+                                    <button type="submit" name="status" value="Attended"
+                                            class="btn btn-sm py-1 px-3 fw-semibold btn-accent">
+                                        <i class="bi bi-check-lg"></i> Attended
+                                    </button>
+                                    <button type="submit" name="status" value="NoShow"
+                                            class="btn btn-sm py-1 px-3 fw-semibold btn-danger">
+                                        <i class="bi bi-x-lg"></i> No-show
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="small text-muted-fz">-</span>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

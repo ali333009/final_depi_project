@@ -1,0 +1,53 @@
+@model List<FitZone.Models.Entities.SubscriptionPlan>
+@{ ViewData["Title"] = "Subscription Plans"; }
+
+<div class="page-header">
+    <div>
+        <div class="hero-badge mb-1">ADMIN PANEL</div>
+        <h2 class="page-header-title"><span class="text-gradient-orange">PLANS</span></h2>
+        <p class="text-muted-fz">Manage your pricing and plans</p>
+    </div>
+    <a asp-controller="Admin" asp-action="CreatePlan" class="btn btn-accent px-4 py-2">
+        <i class="bi bi-plus-lg" style="margin-right:6px;"></i>
+        NEW PLAN
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card bg-card">
+        <div class="text-center py-5">
+            <p class="text-muted-fz mb-0">No plans yet</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var p in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card bg-card h-100">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h4 class="fw-bold mb-0">@p.PlanName</h4>
+                            <span class="badge badge-muted">@p.DurationMonths mo</span>
+                        </div>
+                        <div class="mb-4">
+                            <span class="counter fs-1 fw-bold text-gradient-orange" data-target="@p.Price">0</span>
+                            <small class="text-muted-fz">$</small>
+                        </div>
+                        <div class="mt-auto d-flex gap-2">
+                            <a asp-controller="Admin" asp-action="EditPlan" asp-route-id="@p.Id" class="btn btn-outline-fz flex-fill py-2 fw-semibold">Edit</a>
+                            <form asp-controller="Admin" asp-action="DeletePlan" asp-route-id="@p.Id" method="post" class="flex-fill"
+                                  onsubmit="return confirm('Remove this plan?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger w-100 py-2 fw-semibold">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

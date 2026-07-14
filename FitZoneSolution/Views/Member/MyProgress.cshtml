@@ -1,0 +1,96 @@
+@model MyProgressVM
+@{ ViewData["Title"] = "My Progress"; }
+
+<div class="page-header text-center">
+    <span class="hero-badge"><i class="bi bi-graph-up me-1"></i> TRACKING</span>
+    <h2 class="page-header-title" data-reveal>MY <span class="text-gradient-orange">PROGRESS</span></h2>
+    <p class="text-muted-fz" data-reveal>Track your fitness journey and crush your goals</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-5" data-reveal>
+        <div class="card bg-card h-100">
+            <div class="card-body p-4">
+                <h5 class="fw-bold mb-1 d-flex align-items-center gap-2">
+                    <i class="bi bi-plus-circle text-accent"></i>
+                    Add Entry
+                </h5>
+                <p class="text-muted-fz small mb-4">Record your latest measurements</p>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                <form asp-controller="Member" asp-action="AddProgress" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label asp-for="NewEntry.Weight" class="form-label small fw-semibold">Weight (kg)</label>
+                        <input asp-for="NewEntry.Weight" class="form-control" placeholder="e.g. 75" />
+                        <span asp-validation-for="NewEntry.Weight" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NewEntry.BodyFat" class="form-label small fw-semibold">Body Fat (%)</label>
+                        <input asp-for="NewEntry.BodyFat" class="form-control" placeholder="e.g. 15" />
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="NewEntry.Notes" class="form-label small fw-semibold">Notes</label>
+                        <textarea asp-for="NewEntry.Notes" class="form-control" rows="4" placeholder="How was your workout?"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-accent w-100 py-2 fw-semibold">SAVE ENTRY</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7" data-reveal>
+        <div class="card bg-card h-100">
+            <div class="card-body p-4">
+                <h5 class="fw-bold mb-1 d-flex align-items-center gap-2">
+                    <i class="bi bi-clock-history text-accent"></i>
+                    History
+                </h5>
+                <p class="text-muted-fz small mb-4">@Model.History.Count entry(@(Model.History.Count != 1 ? "ies" : "y"))</p>
+
+                @if (!Model.History.Any())
+                {
+                    <div class="text-center py-5">
+                        <p class="text-muted-fz">No entries yet. Add your first measurement to start tracking.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Weight</th>
+                                    <th>Body Fat</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var p in Model.History)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">@p.Date.ToString("MMM dd, yyyy")</td>
+                                    <td class="fw-bold text-gradient-orange">@p.Weight <span class="small text-muted-fz fw-normal">kg</span></td>
+                                    <td>
+                                        @if (p.BodyFat != null)
+                                        {
+                                            <span>@p.BodyFat%</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted-fz">-</span>
+                                        }
+                                    </td>
+                                    <td class="text-muted-fz small">@(p.Notes ?? "-")</td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

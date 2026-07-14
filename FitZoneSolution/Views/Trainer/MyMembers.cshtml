@@ -1,0 +1,57 @@
+@model List<AssignedMemberVM>
+@{ ViewData["Title"] = "My Members"; }
+
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4" data-reveal>
+    <div>
+        <span class="hero-badge"><i class="bi bi-person-workspace me-1"></i> TRAINER PORTAL</span>
+        <h2 class="display-3 mb-1">MY <span class="text-gradient-orange">MEMBERS</span></h2>
+        <p class="text-muted-fz mb-0">@Model.Count member@(Model.Count != 1 ? "s" : "") assigned to you</p>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card bg-card" data-reveal>
+        <div class="text-center py-5">
+            <i class="bi bi-people text-muted-fz d-block mb-2" style="font-size:2rem;"></i>
+            <p class="text-muted-fz mb-0">No members assigned yet</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card bg-card" data-reveal>
+        <div class="table-responsive">
+            <table class="table mb-0 align-middle">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Subscription</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var m in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@m.MemberName</td>
+                        <td class="text-muted-fz">@(m.Phone ?? "-")</td>
+                        <td>
+                            <span class="badge @(m.SubscriptionStatus == "Active" ? "badge-emerald" : "badge-muted")">
+                                @m.SubscriptionStatus
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <a asp-controller="Trainer" asp-action="ViewMemberProgress" asp-route-memberId="@m.MemberId"
+                               class="btn btn-sm btn-outline-fz py-1 px-3 me-1" title="View Progress"><i class="bi bi-graph-up"></i></a>
+                            <a asp-controller="Trainer" asp-action="CreateWorkout" asp-route-memberId="@m.MemberId"
+                               class="btn btn-sm btn-accent py-1 px-3">Create Workout Plan</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

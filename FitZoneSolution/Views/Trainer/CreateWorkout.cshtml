@@ -1,0 +1,42 @@
+@model CreateWorkoutVM
+@{ ViewData["Title"] = "Create Workout Plan"; }
+
+<div class="text-center mb-4" data-reveal>
+    <span class="hero-badge"><i class="bi bi-person-workspace me-1"></i> TRAINER PORTAL</span>
+    <h2 class="display-3">CREATE <span class="text-gradient-orange">WORKOUT</span></h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card bg-card" data-reveal>
+            <div class="card-body p-4">
+                <div class="glass rounded-3 p-3 mb-4 d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center justify-content-center rounded-circle"
+                         style="width:44px;height:44px;background:linear-gradient(135deg,#FF4C29,#FF6B47);font-weight:700;font-size:1.2rem;flex-shrink:0;color:#fff;">
+                        @Model.MemberName?.Substring(0, 1).ToUpper()
+                    </div>
+                    <div>
+                        <div class="fw-bold">@Model.MemberName</div>
+                        <div class="small text-muted-fz">Creating personalized workout plan</div>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                <form asp-controller="Trainer" asp-action="CreateWorkout" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="MemberId" />
+                    <input type="hidden" asp-for="MemberName" />
+                    <div class="mb-4">
+                        <label asp-for="PlanDetails" class="form-label small fw-semibold">Plan Details</label>
+                        <textarea asp-for="PlanDetails" class="form-control" rows="10"
+                                  placeholder="Exercises, sets, reps, rest periods, diet tips, notes..."></textarea>
+                        <span asp-validation-for="PlanDetails" class="text-danger small"></span>
+                        <div class="small text-muted-fz mt-1">Markdown supported — use **bold**, - bullet points, etc.</div>
+                    </div>
+                    <button type="submit" class="btn btn-accent w-100 py-2 fw-semibold">SAVE WORKOUT PLAN</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

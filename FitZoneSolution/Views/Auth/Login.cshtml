@@ -1,0 +1,44 @@
+@model FitZone.Models.ViewModels.LoginVM
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<div class="container d-flex justify-content-center py-5" style="min-height:calc(100vh - 5rem);">
+    <div class="position-relative w-100" style="max-width:28rem;">
+        <div class="card p-5">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <img src="~/images/logo.png" alt="FitZone Logo" style="height:44px; width:auto; border-radius: 8px; object-fit: contain;" />
+                <div>
+                    <h1 class="fz-display fs-2 mb-0"><span class="text-accent">FitZone</span> GYM</h1>
+                    <p class="small text-muted-fz mb-0">Sign in to your account</p>
+                </div>
+            </div>
+
+            <div asp-validation-summary="All" class="text-rose-fz small mb-3"></div>
+
+            <form asp-controller="Auth" asp-action="Login" method="post" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                <input autocomplete="username" type="text" style="display:none" />
+                <input autocomplete="current-password" type="password" style="display:none" />
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input asp-for="Email" type="email" required class="form-control" placeholder="you@@example.com" autocomplete="username" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input asp-for="Password" type="password" required class="form-control" placeholder="••••••••" autocomplete="current-password" />
+                </div>
+                <div class="form-check mb-4">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label class="form-check-label small text-muted-fz" asp-for="RememberMe">Remember me</label>
+                </div>
+                <button type="submit" class="btn btn-accent w-100 btn-lg">Sign In</button>
+            </form>
+
+            <div class="text-center mt-4 pt-3 border-top border-fz small text-muted-fz">
+                Don't have an account? <a asp-controller="Auth" asp-action="Register" class="text-accent">Join Now</a>
+            </div>
+        </div>
+    </div>
+</div>

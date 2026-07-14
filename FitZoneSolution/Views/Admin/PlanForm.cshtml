@@ -1,0 +1,46 @@
+@model PlanFormVM
+@{
+    ViewData["Title"] = Model.Id == null ? "New Plan" : "Edit Plan";
+    var isEdit = Model.Id != null;
+}
+
+<div class="page-header text-center">
+    <div class="hero-badge mb-2">@(isEdit ? "EDIT PLAN" : "NEW PLAN")</div>
+    <h2 class="page-header-title">@(isEdit ? "Edit Plan" : "Create New Plan")</h2>
+    <p class="text-muted-fz">@(isEdit ? "Update subscription plan" : "Add a new subscription plan")</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card bg-card">
+            <div class="card-body p-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                <form asp-controller="Admin" asp-action="@(isEdit ? "EditPlan" : "CreatePlan")" asp-route-id="@Model.Id" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label asp-for="PlanName" class="form-label small fw-semibold">Plan Name</label>
+                        <input asp-for="PlanName" class="form-control" placeholder="e.g. Platinum" />
+                        <span asp-validation-for="PlanName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DurationMonths" class="form-label small fw-semibold">Duration (months)</label>
+                        <input asp-for="DurationMonths" class="form-control" type="number" placeholder="e.g. 3" min="1" max="36" />
+                        <span asp-validation-for="DurationMonths" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Price" class="form-label small fw-semibold">Price ($)</label>
+                        <input asp-for="Price" class="form-control" type="number" step="0.01" placeholder="e.g. 199.99" />
+                        <span asp-validation-for="Price" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-accent w-100 py-2 fw-semibold">
+                        @(isEdit ? "UPDATE PLAN" : "CREATE PLAN")
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

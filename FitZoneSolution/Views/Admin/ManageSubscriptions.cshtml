@@ -1,0 +1,117 @@
+@model List<SubscriptionAdminVM>
+@{ ViewData["Title"] = "Subscriptions"; }
+
+<div class="page-header">
+    <div>
+        <div class="hero-badge mb-1">ADMIN PANEL</div>
+        <h2 class="page-header-title"><span class="text-gradient-orange">SUBSCRIPTIONS</span></h2>
+        <p class="text-muted-fz">@(ViewBag.TotalCount ?? Model.Count) subscription@((ViewBag.TotalCount ?? Model.Count) != 1 ? "s" : "")</p>
+    </div>
+</div>
+
+<form method="get" asp-action="ManageSubscriptions" class="mb-4">
+    <div class="input-group">
+        <span class="input-group-text bg-card border-0 text-muted-fz"><i class="bi bi-search"></i></span>
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control bg-card border-0 text-white"
+               placeholder="Search by member name or plan..." autocomplete="off" />
+        @if (!string.IsNullOrEmpty((string?)ViewBag.Search))
+        {
+            <a asp-action="ManageSubscriptions" class="btn btn-outline-fz">Clear</a>
+        }
+        <button type="submit" class="btn btn-accent">Search</button>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="card bg-card">
+        <div class="text-center py-5">
+            <p class="text-muted-fz mb-0">@(ViewBag.Search != null ? "No subscriptions match your search" : "No subscriptions yet")</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card bg-card">
+        <div class="table-responsive">
+            <table class="table mb-0 align-middle">
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Plan</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Status</th>
+                        <th class="text-end">Paid</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@s.MemberName</td>
+                        <td class="text-gradient-orange">@s.PlanName</td>
+                        <td class="text-muted-fz small">@s.StartDate.ToString("MMM dd, yyyy")</td>
+                        <td class="text-muted-fz small">@s.EndDate.ToString("MMM dd, yyyy")</td>
+                        <td>
+                            @switch (s.Status)
+                            {
+                                case "Active":
+                                    <span class="badge badge-emerald">&#9679; Active</span>
+                                    break;
+                                case "Expired":
+                                    <span class="badge badge-muted">Expired</span>
+                                    break;
+                                case "Cancelled":
+                                    <span class="badge badge-rose">Cancelled</span>
+                                    break;
+                                case "PendingPayment":
+                                    <span class="badge badge-amber">Pending</span>
+                                    break;
+                                default:
+                                    <span class="badge badge-muted">@s.Status</span>
+                                    break;
+                            }
+                        </td>
+                        <td class="fw-bold">@s.AmountPaid.ToString("C")</td>
+                        <td class="text-end">
+                            @if (s.Status == "PendingPayment")
+                            {
+                                <form asp-controller="Admin" asp-action="ConfirmSubscription" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="subscriptionId" value="@s.SubscriptionId" />
+                                    <button type="submit" class="btn btn-sm btn-accent" title="Confirm"><i class="bi bi-check-circle"></i></button>
+                                </form>
+                            }
+                            @if (s.Status == "Active")
+                            {
+                                <form asp-controller="Admin" asp-action="ExtendSubscription" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="subscriptionId" value="@s.SubscriptionId" />
+                                    <select name="months" class="form-select form-select-sm d-inline-block w-auto" style="font-size:0.75rem;">
+                                        <option value="1">1 mo</option>
+                                        <option value="3">3 mo</option>
+                                        <option value="6">6 mo</option>
+                                        <option value="12">12 mo</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-outline-fz" title="Extend"><i class="bi bi-plus-circle"></i></button>
+                                </form>
+                            }
+                            @if (s.Status == "Active" || s.Status == "PendingPayment")
+                            {
+                                <form asp-controller="Admin" asp-action="CancelSubscription" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="subscriptionId" value="@s.SubscriptionId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-fz" style="color:#ff4d6d;border-color:#ff4d6d;" title="Cancel"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<partial name="_Pagination" />

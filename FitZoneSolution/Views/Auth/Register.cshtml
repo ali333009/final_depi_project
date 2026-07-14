@@ -1,0 +1,54 @@
+@model FitZone.Models.ViewModels.RegisterVM
+@{
+    ViewData["Title"] = "Join FitZone GYM";
+}
+
+<div class="container d-flex justify-content-center py-5" style="min-height:calc(100vh - 5rem);">
+    <div class="position-relative w-100" style="max-width:32rem;">
+        <div class="card p-5">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <img src="~/images/logo.png" alt="FitZone Logo" style="height:44px; width:auto; border-radius: 8px; object-fit: contain;" />
+                <div>
+                    <h1 class="fz-display fs-2 mb-0">Join <span class="text-accent">FitZone</span> GYM</h1>
+                    <p class="small text-muted-fz mb-0">Your first session is on us.</p>
+                </div>
+            </div>
+
+            <div asp-validation-summary="All" class="text-rose-fz small mb-3"></div>
+
+            <form asp-controller="Auth" asp-action="Register" method="post" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <input autocomplete="username" type="text" style="display:none" />
+                <input autocomplete="new-password" type="password" style="display:none" />
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Full Name</label>
+                        <input asp-for="Name" required class="form-control" placeholder="Your name" autocomplete="name" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Email</label>
+                        <input asp-for="Email" type="email" required class="form-control" placeholder="you@@example.com" autocomplete="email" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Phone (optional)</label>
+                        <input asp-for="Phone" class="form-control" placeholder="+20 100 000 0000" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Password</label>
+                        <input asp-for="Password" type="password" required class="form-control" placeholder="••••••••" autocomplete="new-password" />
+                        <small class="text-muted-fz">Min 8 characters.</small>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Confirm Password</label>
+                        <input asp-for="ConfirmPassword" type="password" required class="form-control" placeholder="Re-enter password" autocomplete="new-password" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-accent w-100 btn-lg mt-4">Create Account</button>
+            </form>
+
+            <div class="text-center mt-4 pt-3 border-top border-fz small text-muted-fz">
+                Already a member? <a asp-controller="Auth" asp-action="Login" class="text-accent">Sign in</a>
+            </div>
+        </div>
+    </div>
+</div>

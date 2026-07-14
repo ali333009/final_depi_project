@@ -1,0 +1,332 @@
+@{
+    ViewData["Title"] = "Home";
+    ViewData["FullPage"] = true;
+    ViewData["HideFooter"] = true;
+}
+
+<!-- HERO -->
+<section class="position-relative overflow-hidden" style="min-height:100vh;margin-top:-5rem;">
+    <div class="position-absolute inset-0">
+        <img src="~/images/hero_bg.png" alt="" class="w-100 h-100 object-fit-cover" />
+        <div class="position-absolute inset-0 hero-overlay"></div>
+        <div class="position-absolute inset-0 grid-pattern opacity-25"></div>
+    </div>
+    <div class="container position-relative d-flex flex-column justify-content-end pb-5" style="min-height:100vh;padding-top:6rem;">
+        <div style="max-width:48rem;">
+            <div data-reveal>
+                <span class="hero-badge">
+                    <i class="bi bi-fire me-1"></i> Premium Athletic Club
+                </span>
+                <h1 class="display-1 mb-0">
+                    Push your limits.<br />Build your best self.<br /><span class="text-gradient-orange">Start today.</span>
+                </h1>
+            </div>
+            <p class="lead text-muted-fz mt-4 mb-0" style="max-width:36rem;" data-reveal>
+                Real coaching, serious equipment, and a community that actually pushes you to show up. Whether it's your first day or you're chasing a new PR, this is where you belong.
+            </p>
+            <div class="d-flex flex-wrap gap-3 mt-4" data-reveal>
+                <a asp-controller="Auth" asp-action="Register" class="btn btn-accent btn-lg">
+                    Start Free Trial <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-fz btn-lg">
+                    <i class="bi bi-trophy me-1"></i> Our Programs
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STATS STRIP -->
+<section class="border-y border-fz py-5" style="background:rgba(23,24,28,0.3)">
+    <div class="container">
+        <div class="row g-4 text-center text-lg-start">
+            <div class="col-6 col-lg-3" data-reveal>
+                <i class="bi bi-people text-accent fs-4"></i>
+                <div class="stat-number mt-2"><span class="fz-counter" data-target="@(ViewBag.Stats?.Members ?? 5000)">0</span>+</div>
+                <div class="small text-uppercase text-muted-fz" style="letter-spacing:0.15em">Active Members</div>
+            </div>
+            <div class="col-6 col-lg-3" data-reveal>
+                <i class="bi bi-award text-accent fs-4"></i>
+                <div class="stat-number mt-2"><span class="fz-counter" data-target="@(ViewBag.Stats?.Trainers ?? 50)">0</span>+</div>
+                <div class="small text-uppercase text-muted-fz" style="letter-spacing:0.15em">Expert Coaches</div>
+            </div>
+            <div class="col-6 col-lg-3" data-reveal>
+                <i class="bi bi-activity text-accent fs-4"></i>
+                <div class="stat-number mt-2"><span class="fz-counter" data-target="@(ViewBag.Stats?.Classes ?? 30)">0</span>+</div>
+                <div class="small text-uppercase text-muted-fz" style="letter-spacing:0.15em">Weekly Classes</div>
+            </div>
+            <div class="col-6 col-lg-3" data-reveal>
+                <i class="bi bi-fire text-accent fs-4"></i>
+                <div class="stat-number mt-2"><span class="fz-counter" data-target="@(ViewBag.Stats?.Years ?? 10)">0</span>+</div>
+                <div class="small text-uppercase text-muted-fz" style="letter-spacing:0.15em">Years Open</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-5 py-lg-6">
+    <div class="container">
+        <div class="text-center mb-5" data-reveal>
+            <span class="text-accent small text-uppercase" style="letter-spacing:0.2em">Why FitZone</span>
+            <h2 class="display-3 mt-2">Built for <span class="text-gradient-orange">Results</span></h2>
+            <p class="text-muted-fz">Everything you need to transform your body and mind.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-reveal>
+                <div class="card bg-card h-100 text-center p-4">
+                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:64px;height:64px;background:rgba(255,76,41,0.1);border:1px solid rgba(255,76,41,0.2);">
+                        <i class="bi bi-trophy text-accent fs-4"></i>
+                    </div>
+                    <h5 class="fz-display">Premium Equipment</h5>
+                    <p class="text-muted-fz small mb-0">State-of-the-art machines and free weights for every training style.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-reveal>
+                <div class="card bg-card h-100 text-center p-4">
+                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:64px;height:64px;background:rgba(255,76,41,0.1);border:1px solid rgba(255,76,41,0.2);">
+                        <i class="bi bi-person-check text-accent fs-4"></i>
+                    </div>
+                    <h5 class="fz-display">Expert Coaches</h5>
+                    <p class="text-muted-fz small mb-0">Personalized training plans from certified professionals who care.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-reveal>
+                <div class="card bg-card h-100 text-center p-4">
+                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:64px;height:64px;background:rgba(255,76,41,0.1);border:1px solid rgba(255,76,41,0.2);">
+                        <i class="bi bi-calendar-check text-accent fs-4"></i>
+                    </div>
+                    <h5 class="fz-display">Flexible Plans</h5>
+                    <p class="text-muted-fz small mb-0">Monthly, quarterly, and annual memberships that fit your lifestyle.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRICING -->
+<section class="py-5 py-lg-6 border-y border-fz" style="background:rgba(23,24,28,0.2)">
+    <div class="container">
+        <div class="text-center mb-5" data-reveal>
+            <span class="text-accent small text-uppercase" style="letter-spacing:0.2em">Membership</span>
+            <h2 class="display-3 mt-2">Choose Your <span class="text-gradient-orange">Plan</span></h2>
+            <p class="text-muted-fz">Simple, transparent pricing. Cancel anytime.</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-4 col-md-6" data-reveal>
+                <div class="card pricing-card h-100 p-4 text-center">
+                    <h3 class="fz-display fs-2 mb-1">Starter</h3>
+                    <p class="text-muted-fz small">Get started with the basics</p>
+                    <div class="d-flex align-items-baseline justify-content-center gap-1 my-3">
+                        <span class="fz-display fs-1 text-gradient-orange">500</span>
+                        <span class="text-muted-fz small">/mo</span>
+                    </div>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small flex-grow-1 text-start">
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Unlimited gym access</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Free fitness assessment</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Locker &amp; shower access</span></li>
+                    </ul>
+                    <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-fz mt-3 w-100">Get Started</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-reveal>
+                <div class="card pricing-card popular h-100 p-4 text-center position-relative">
+                    <span class="badge badge-accent position-absolute top-0 end-0 rounded-bottom-start-3 py-2 px-3" style="border-top-right-radius:1rem">Most Popular</span>
+                    <h3 class="fz-display fs-2 mb-1">Pro</h3>
+                    <p class="text-muted-fz small">Best for committed athletes</p>
+                    <div class="d-flex align-items-baseline justify-content-center gap-1 my-3">
+                        <span class="fz-display fs-1 text-gradient-orange">1350</span>
+                        <span class="text-muted-fz small">/3mo</span>
+                    </div>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small flex-grow-1 text-start">
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Everything in Starter</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>1 personal training session</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Priority class booking</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Nutrition starter guide</span></li>
+                    </ul>
+                    <a asp-controller="Auth" asp-action="Register" class="btn btn-accent mt-3 w-100">Join Now</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-reveal>
+                <div class="card pricing-card h-100 p-4 text-center">
+                    <h3 class="fz-display fs-2 mb-1">Elite</h3>
+                    <p class="text-muted-fz small">The complete experience</p>
+                    <div class="d-flex align-items-baseline justify-content-center gap-1 my-3">
+                        <span class="fz-display fs-1 text-gradient-orange">4800</span>
+                        <span class="text-muted-fz small">/yr</span>
+                    </div>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small flex-grow-1 text-start">
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Everything in Pro</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>4 personal training sessions</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Full nutrition plan</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Exclusive members events</span></li>
+                    </ul>
+                    <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-fz mt-3 w-100">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TRAINERS -->
+<section class="py-5 py-lg-6">
+    <div class="container">
+        <div class="text-center mb-5" data-reveal>
+            <span class="text-accent small text-uppercase" style="letter-spacing:0.2em">Meet the team</span>
+            <h2 class="display-3 mt-2">Our <span class="text-gradient-orange">Coaches</span></h2>
+            <p class="text-muted-fz">Certified, experienced, and genuinely invested in your progress.</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-sm-6 col-lg-3" data-reveal>
+                <div class="card bg-card h-100 text-center p-4">
+                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:80px;height:80px;background:linear-gradient(135deg,#FF4C29,#FF6B47);color:#fff;font-family:'Anton',sans-serif;font-size:1.5rem;">AS</div>
+                    <h6 class="fz-display mb-1">Ali Salama</h6>
+                    <div class="small text-accent mb-1">Strength &amp; Conditioning</div>
+                    <div class="small text-muted-fz">12 years experience</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-reveal>
+                <div class="card bg-card h-100 text-center p-4">
+                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:80px;height:80px;background:linear-gradient(135deg,#60A5FA,#6366f1);color:#fff;font-family:'Anton',sans-serif;font-size:1.5rem;">AW</div>
+                    <h6 class="fz-display mb-1">Ali Wael</h6>
+                    <div class="small text-accent mb-1">Yoga &amp; Flexibility</div>
+                    <div class="small text-muted-fz">8 years experience</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-reveal>
+                <div class="card bg-card h-100 text-center p-4">
+                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:80px;height:80px;background:linear-gradient(135deg,#34D399,#10b981);color:#fff;font-family:'Anton',sans-serif;font-size:1.5rem;">HZ</div>
+                    <h6 class="fz-display mb-1">Hazem</h6>
+                    <div class="small text-accent mb-1">Boxing &amp; HIIT</div>
+                    <div class="small text-muted-fz">10 years experience</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-reveal>
+                <div class="card bg-card h-100 text-center p-4">
+                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:80px;height:80px;background:linear-gradient(135deg,#FBBF24,#f97316);color:#fff;font-family:'Anton',sans-serif;font-size:1.5rem;">MN</div>
+                    <h6 class="fz-display mb-1">Mina</h6>
+                    <div class="small text-accent mb-1">Nutrition &amp; Wellness</div>
+                    <div class="small text-muted-fz">7 years experience</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="py-5 py-lg-6 border-y border-fz" style="background:rgba(23,24,28,0.2)">
+    <div class="container">
+        <div class="mx-auto text-center" style="max-width:48rem;">
+            <i class="bi bi-quote text-accent" style="font-size:2.5rem"></i>
+            <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <blockquote class="fz-display fs-3 mb-4" style="line-height:1.2">"Best gym I've ever trained at. The equipment is top-tier and the coaches actually care about your progress."</blockquote>
+                        <div class="d-flex justify-content-center gap-1 mb-3">
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center gap-2">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:48px;height:48px;background:linear-gradient(135deg,#FF4C29,#FF6B47);color:#fff;font-weight:700;">A</div>
+                            <div class="text-start">
+                                <div class="fw-semibold">Ahmed</div>
+                                <div class="small text-muted-fz">FitZone Member</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <blockquote class="fz-display fs-3 mb-4" style="line-height:1.2">"Transformed my body in 6 months. The personal training plans are incredibly effective. Highly recommend!"</blockquote>
+                        <div class="d-flex justify-content-center gap-1 mb-3">
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center gap-2">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:48px;height:48px;background:linear-gradient(135deg,#60A5FA,#6366f1);color:#fff;font-weight:700;">S</div>
+                            <div class="text-start">
+                                <div class="fw-semibold">Sara</div>
+                                <div class="small text-muted-fz">FitZone Member</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <blockquote class="fz-display fs-3 mb-4" style="line-height:1.2">"The community here is unmatched. Everyone pushes each other to be better. FitZone changed my life."</blockquote>
+                        <div class="d-flex justify-content-center gap-1 mb-3">
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-fill" style="color:#FF4C29"></i>
+                            <i class="bi bi-star-half" style="color:#FF4C29"></i>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center gap-2">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:48px;height:48px;background:linear-gradient(135deg,#34D399,#10b981);color:#fff;font-weight:700;">M</div>
+                            <div class="text-start">
+                                <div class="fw-semibold">Mohamed</div>
+                                <div class="small text-muted-fz">FitZone Member</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GALLERY STRIP -->
+<section class="py-5 py-lg-6 overflow-hidden">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-5">
+            <div data-reveal>
+                <span class="text-accent small text-uppercase" style="letter-spacing:0.2em">Inside FitZone</span>
+                <h2 class="display-3 mt-2">The <span class="text-gradient-orange">Vibe</span></h2>
+                <p class="text-muted-fz">A space built for serious work — and serious play.</p>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex overflow-hidden">
+        <div class="d-flex marquee gap-3">
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/hero_bg.png" alt="Gym" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/class_strength.png" alt="Strength Class" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/trainer_marcus.png" alt="Trainer" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/class.png" alt="Class" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/trainer_elena.png" alt="Trainer" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/trainer_kai.png" alt="Trainer" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/trainer_aria.png" alt="Trainer" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/trainer_diego.png" alt="Trainer" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <!-- duplicate set for seamless loop -->
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/hero_bg.png" alt="Gym" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/class_strength.png" alt="Strength Class" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/trainer_marcus.png" alt="Trainer" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/class.png" alt="Class" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/trainer_elena.png" alt="Trainer" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/trainer_kai.png" alt="Trainer" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/trainer_aria.png" alt="Trainer" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+            <div class="card text-decoration-none flex-shrink-0" style="width:224px;aspect-ratio:1;overflow:hidden;"><img src="~/images/trainer_diego.png" alt="Trainer" class="w-100 h-100 object-fit-cover" loading="lazy" /></div>
+        </div>
+    </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="py-5 py-lg-6">
+    <div class="container">
+        <div class="card position-relative overflow-hidden p-4 p-lg-6 text-center" style="padding:4rem 1.5rem;">
+            <div class="position-absolute inset-0 grid-pattern opacity-25"></div>
+            <div class="position-absolute" style="top:-5rem;right:-5rem;width:18rem;height:18rem;border-radius:50%;background:rgba(255,76,41,0.2);filter:blur(60px)"></div>
+            <div class="position-absolute" style="bottom:-5rem;left:-5rem;width:18rem;height:18rem;border-radius:50%;background:rgba(255,76,41,0.1);filter:blur(60px)"></div>
+            <div class="position-relative mx-auto" style="max-width:36rem;">
+                <img src="~/images/logo.png" alt="FitZone Logo" style="height:48px; width:auto; border-radius: 8px; object-fit: contain; margin-bottom: 1rem;" />
+                <h2 class="display-3 mb-0">Your first session<br />is on us.</h2>
+                <p class="text-muted-fz mt-3 mb-4">No commitment, no pressure. Come in, train with the best, and see if FitZone fits you. The hardest part is walking through the door — we handle the rest.</p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a asp-controller="Auth" asp-action="Register" class="btn btn-accent btn-lg">Claim Free Trial <i class="bi bi-arrow-right ms-2"></i></a>
+                    <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-fz btn-lg">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,191 @@
+@using System.Security.Claims
+@{
+    var pageTitle = ViewData["Title"] != null ? ViewData["Title"] + " — FitZone GYM" : "FitZone GYM — Premium Athletic Performance Club";
+    var pageDesc = ViewData["Description"] as string ?? "Premium athletic performance club. Expert coaches, state-of-the-art equipment, and a community that pushes you.";
+    var userName = User.Identity?.Name;
+    var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@pageTitle</title>
+    <meta name="description" content="@pageDesc" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/fitzone.css" asp-append-version="true" />
+    <link rel="icon" href="/favicon.ico" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="fz-navbar navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+            <a class="fz-brand d-flex align-items-center gap-2" asp-controller="Home" asp-action="Index">
+                <img src="~/images/logo.png" alt="FitZone Logo" style="height:40px; width:auto; border-radius: 8px; object-fit: contain;" />
+                <span class="text-accent">FitZone</span> GYM
+            </a>
+            <button class="navbar-toggler border-0 text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+                <i class="bi bi-list fs-2"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navMain">
+                <ul class="navbar-nav mx-auto gap-1">
+                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        if (userRole == "Member")
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Member" asp-action="Dashboard">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Member" asp-action="MySubscription">My Subscription</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Member" asp-action="MyWorkoutPlans">Workout Plans</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Member" asp-action="BookClass">Book a Class</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Member" asp-action="BookingHistory">Booking History</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Member" asp-action="MyProgress">My Progress</a></li>
+                        }
+                        else if (userRole == "Trainer")
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Trainer" asp-action="Dashboard">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Trainer" asp-action="Schedule">Schedule</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Trainer" asp-action="MyMembers">My Members</a></li>
+                        }
+                        else if (userRole == "Admin")
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ManageMembers">Members</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ManageTrainers">Trainers</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ManagePlans">Plans</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ManageClasses">Classes</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ManageSubscriptions">Subscriptions</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Reports">Reports</a></li>
+                        }
+                    }
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        var dashboardUrl = userRole switch
+                        {
+                            "Admin" => Url.Action("Dashboard", "Admin"),
+                            "Trainer" => Url.Action("Dashboard", "Trainer"),
+                            "Member" => Url.Action("Dashboard", "Member"),
+                            _ => null
+                        };
+                        <div class="dropdown">
+                            <button class="btn btn-outline-fz btn-sm d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i>
+                                <span class="d-none d-lg-inline">@(userName ?? "User")</span>
+                                <i class="bi bi-chevron-down small"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><span class="dropdown-item-text small text-muted-fz">Signed in as<br /><strong>@(userName ?? "User")</strong> — @userRole</span></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                @if (dashboardUrl != null)
+                                {
+                                    <li><a class="dropdown-item" href="@dashboardUrl"><i class="bi bi-grid me-2"></i>Dashboard</a></li>
+                                }
+                                @if (userRole == "Member")
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Member" asp-action="EditProfile"><i class="bi bi-person-gear me-2"></i>Edit Profile</a></li>
+                                }
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                    <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="dropdown-item text-rose-fz border-0 bg-transparent w-100 text-start"><i class="bi bi-box-arrow-right me-2"></i>Sign out</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-fz btn-sm d-none d-lg-inline-flex">Sign in</a>
+                        <a asp-controller="Auth" asp-action="Register" class="btn btn-accent btn-sm">Join Now</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="toast-container" id="toastContainer">
+        @if (TempData["Success"] != null)
+        {
+            <div class="toast toast-success">&#10003; @TempData["Success"]<button class="toast-close" onclick="this.parentElement.remove()">&times;</button></div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="toast toast-error">&#10007; @TempData["Error"]<button class="toast-close" onclick="this.parentElement.remove()">&times;</button></div>
+        }
+    </div>
+
+    <main class="flex-grow-1 @(ViewData["FullPage"] == null ? "container mt-4 mb-5" : "")">
+        @RenderBody()
+    </main>
+
+    <footer class="border-top border-fz mt-auto" style="background:rgba(23,24,28,0.5)">
+        <div class="container py-5">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <a class="fz-brand d-flex align-items-center gap-2 mb-3" asp-controller="Home" asp-action="Index">
+                        <img src="~/images/logo.png" alt="FitZone Logo" style="height:36px; width:auto; border-radius: 8px; object-fit: contain;" />
+                        <span class="text-accent">FitZone</span> GYM
+                    </a>
+                    <p class="text-muted-fz small">Premium Athletic Performance Club.<br />Your fitness destination. Real results, real community.</p>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-outline-fz btn-sm" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-fz btn-sm" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-fz btn-sm" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="fz-display fs-6 mb-3">Quick Links</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li><a class="text-muted-fz text-decoration-none" asp-controller="Home" asp-action="Index">Home</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="fz-display fs-6 mb-3">Members</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li><a class="text-muted-fz text-decoration-none" asp-controller="Auth" asp-action="Login">Sign in</a></li>
+                        <li><a class="text-muted-fz text-decoration-none" asp-controller="Auth" asp-action="Register">Join Now</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="fz-display fs-6 mb-3">Contact Us</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2 text-muted-fz">
+                        <li><i class="bi bi-geo-alt text-accent me-2"></i>Cairo, Egypt</li>
+                        <li><i class="bi bi-telephone text-accent me-2"></i>+20 100 000 0000</li>
+                        <li><i class="bi bi-envelope text-accent me-2"></i>info&#64;fitzone.com</li>
+                        <li><i class="bi bi-clock text-accent me-2"></i>Mon–Sat: 6 AM – 11 PM</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 mt-4 pt-3 border-top border-fz small text-muted-fz">
+                <span>&copy; @DateTime.Now.Year FitZone GYM. All rights reserved.</span>
+                <span>Built with ASP.NET Core &middot; Premium Athletic Dark</span>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/fitzone.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+    (function() {
+
+        var toasts = document.querySelectorAll('.toast');
+        toasts.forEach(function(t) {
+            setTimeout(function() { if (t.parentNode) t.remove(); }, 5000);
+        });
+    })();
+    </script>
+</body>
+</html>

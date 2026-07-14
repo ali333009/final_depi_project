@@ -1,0 +1,104 @@
+@model BookClassVM
+@{ ViewData["Title"] = "Book a Class"; }
+
+<div class="page-header text-center">
+    <span class="hero-badge"><i class="bi bi-calendar-event me-1"></i> SCHEDULE</span>
+    <h2 class="page-header-title" data-reveal>BOOK A <span class="text-gradient-orange">CLASS</span></h2>
+    <p class="text-muted-fz" data-reveal>Find your perfect session and train with the best</p>
+</div>
+
+@if (!Model.HasActiveSubscription)
+{
+    <div class="alert alert-warning d-flex align-items-center gap-3 p-3 mb-4" style="max-width:700px;margin:0 auto 2rem;" data-reveal>
+        <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+        <div class="flex-grow-1">
+            <strong>No active subscription</strong><br />
+            <span class="small text-muted-fz">You need an active subscription to book a class.</span>
+        </div>
+        <a asp-controller="Member" asp-action="Subscribe" class="btn btn-sm btn-accent px-3">Subscribe</a>
+    </div>
+}
+
+<div class="row g-4">
+    @foreach (var c in Model.AvailableClasses)
+    {
+        <div class="col-lg-6" data-reveal>
+            <div class="card bg-card h-100 position-relative overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h4 class="fw-bold mb-1">@c.ClassName</h4>
+                            <div class="d-flex align-items-center gap-2 small text-muted-fz">
+                                <i class="bi bi-person"></i>
+                                <span>@c.TrainerName</span>
+                            </div>
+                        </div>
+                        <span class="badge badge-accent">@c.Duration min</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between small mb-1">
+                            <span class="text-muted-fz">Capacity</span>
+                            <span class="fw-semibold @(c.IsFull ? "text-rose" : "text-gradient-orange")">@c.BookedCount / @c.Capacity</span>
+                        </div>
+                        <div class="progress" style="height:6px;border-radius:3px;background:rgba(255,255,255,0.08);">
+                            <div class="progress-bar bg-accent" role="progressbar"
+                                 style="width: @(c.Capacity > 0 ? Math.Round((double)c.BookedCount / c.Capacity * 100) : 0)%"
+                                 aria-valuenow="@c.BookedCount" aria-valuemin="0" aria-valuemax="@c.Capacity">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass rounded-3 p-3 mb-3">
+                        <div class="small fw-semibold mb-2 text-gradient-orange">SCHEDULE</div>
+                        @if (c.Schedule.Any())
+                        {
+                            <ul class="list-unstyled mb-0 small">
+                                @foreach (var s in c.Schedule)
+                                {
+                                    <li class="d-flex align-items-center gap-2 mb-1">
+                                        <i class="bi bi-clock text-accent" style="flex-shrink:0;"></i>
+                                        <span>@s.Day</span>
+                                        <span class="text-muted-fz">@s.Start.ToString(@"hh\:mm") - @s.End.ToString(@"hh\:mm")</span>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <div class="text-muted-fz small">No scheduled times yet</div>
+                        }
+                    </div>
+
+                    <form class="mt-auto">
+                        @Html.AntiForgeryToken()
+                        @if (c.AlreadyBooked)
+                        {
+                            <input type="hidden" name="bookingId" value="@c.ActiveBookingId" />
+                            <button type="submit" formaction="@Url.Action("CancelBooking", "Member")" formmethod="post" class="btn btn-outline-fz w-100 py-2 fw-semibold" style="color:#ff4d6d;border-color:#ff4d6d;">
+                                <i class="bi bi-x-circle me-1"></i> Cancel Booking
+                            </button>
+                        }
+                        else if (c.IsFull)
+                        {
+                            <button type="button" class="btn btn-outline-fz w-100 py-2 fw-semibold" style="color:#ff4d6d;border-color:#ff4d6d;cursor:default;">
+                                <i class="bi bi-x-circle me-1"></i> Class Full
+                            </button>
+                        }
+                        else if (!Model.HasActiveSubscription)
+                        {
+                            <button type="button" class="btn btn-outline-fz w-100 py-2 fw-semibold" style="color:#999;border-color:#333;cursor:default;">
+                                Subscribe to Book
+                            </button>
+                        }
+                        else
+                        {
+                            <input type="hidden" name="classId" value="@c.ClassId" />
+                            <button type="submit" formaction="@Url.Action("BookClass", "Member")" formmethod="post" class="btn btn-accent w-100 py-2 fw-semibold">BOOK NOW</button>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,63 @@
+@model AssignMemberVM
+@{ ViewData["Title"] = "Assign Members"; }
+
+<div class="page-header text-center">
+    <div class="hero-badge mb-2">ADMIN PANEL</div>
+    <h2 class="page-header-title"><span class="text-gradient-orange">ASSIGN</span> MEMBERS</h2>
+    <p class="text-muted-fz">Select members to assign to this trainer</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="card bg-card">
+            <div class="card-body p-4">
+                <div class="glass rounded-3 p-3 mb-4 d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center justify-content-center rounded-circle"
+                         style="width:44px;height:44px;background:linear-gradient(135deg,var(--fz-accent),var(--fz-accent-2));font-weight:700;font-size:1.2rem;flex-shrink:0;">
+                        @Model.TrainerName.Substring(0, 1)
+                    </div>
+                    <div>
+                        <div class="fw-bold">@Model.TrainerName</div>
+                        <div class="small text-muted-fz">@Model.SelectedMemberIds.Count member@(Model.SelectedMemberIds.Count != 1 ? "s" : "") currently assigned</div>
+                    </div>
+                </div>
+
+                <form asp-controller="Admin" asp-action="AssignMembers" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="trainerId" value="@Model.TrainerId" />
+
+                    @if (!Model.AllMembers.Any())
+                    {
+                        <div class="text-center py-5">
+                            <p class="text-muted-fz mb-0">No members registered yet</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row g-3 mb-4">
+                            @foreach (var m in Model.AllMembers)
+                            {
+                                var isChecked = Model.SelectedMemberIds.Contains(m.MemberId);
+                                <div class="col-md-4 col-sm-6">
+                                    <label for="mem-@m.MemberId" class="d-block p-3 rounded-3"
+                                           style="cursor:pointer;border:1px solid @(isChecked ? "var(--fz-accent)" : "var(--fz-border)");background:@(isChecked ? "rgba(255,76,41,0.08)" : "transparent");">
+                                        <div class="form-check d-flex align-items-center gap-2 mb-0">
+                                            <input class="form-check-input" type="checkbox" name="selectedMemberIds" value="@m.MemberId"
+                                                   id="mem-@m.MemberId" @(isChecked ? "checked" : "") />
+                                            <label class="form-check-label small" for="mem-@m.MemberId" style="cursor:pointer;">
+                                                <strong class="d-block">@m.Name</strong>
+                                                <span class="text-muted-fz" style="font-size:0.75rem;">@m.Email</span>
+                                            </label>
+                                        </div>
+                                    </label>
+                                </div>
+                            }
+                        </div>
+
+                        <button type="submit" class="btn btn-accent w-100 py-2 fw-semibold">SAVE ASSIGNMENTS</button>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

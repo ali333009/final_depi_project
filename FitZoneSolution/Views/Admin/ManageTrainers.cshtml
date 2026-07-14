@@ -1,0 +1,78 @@
+@model List<TrainerListItemVM>
+@{ ViewData["Title"] = "Manage Trainers"; }
+
+<div class="page-header">
+    <div>
+        <div class="hero-badge mb-1">ADMIN PANEL</div>
+        <h2 class="page-header-title"><span class="text-gradient-orange">TRAINERS</span></h2>
+        <p class="text-muted-fz">@(ViewBag.TotalCount ?? Model.Count) trainer@((ViewBag.TotalCount ?? Model.Count) != 1 ? "s" : "")</p>
+    </div>
+    <a asp-controller="Admin" asp-action="CreateTrainer" class="btn btn-accent px-4 py-2">
+        <i class="bi bi-plus-lg" style="margin-right:6px;"></i>
+        NEW TRAINER
+    </a>
+</div>
+
+<form method="get" asp-action="ManageTrainers" class="mb-4">
+    <div class="input-group">
+        <span class="input-group-text bg-card border-0 text-muted-fz"><i class="bi bi-search"></i></span>
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control bg-card border-0 text-white"
+               placeholder="Search by name or email..." autocomplete="off" />
+        @if (!string.IsNullOrEmpty((string?)ViewBag.Search))
+        {
+            <a asp-action="ManageTrainers" class="btn btn-outline-fz">Clear</a>
+        }
+        <button type="submit" class="btn btn-accent">Search</button>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="card bg-card">
+        <div class="text-center py-5">
+            <p class="text-muted-fz mb-0">@(ViewBag.Search != null ? "No trainers match your search" : "No trainers yet")</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card bg-card">
+        <div class="table-responsive">
+            <table class="table mb-0 align-middle">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Specialization</th>
+                        <th>Hired</th>
+                        <th>Members</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@t.Name</td>
+                        <td class="text-muted-fz small">@t.Email</td>
+                        <td><span class="badge badge-accent">@t.Specialization</span></td>
+                        <td class="text-muted-fz small">@t.HireDate.ToString("MMM dd, yyyy")</td>
+                        <td><span class="badge badge-muted">@t.AssignedMemberCount member@(t.AssignedMemberCount != 1 ? "s" : "")</span></td>
+                        <td class="text-end text-nowrap">
+                            <a asp-controller="Admin" asp-action="AssignMembers" asp-route-trainerId="@t.TrainerId" class="btn btn-sm btn-accent">Assign</a>
+                            <a asp-controller="Admin" asp-action="EditTrainer" asp-route-id="@t.TrainerId" class="btn btn-sm btn-outline-fz">Edit</a>
+                            <form asp-controller="Admin" asp-action="DeleteTrainer" asp-route-id="@t.TrainerId" method="post" class="d-inline"
+                                  onsubmit="return confirm('Remove this trainer?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<partial name="_Pagination" />

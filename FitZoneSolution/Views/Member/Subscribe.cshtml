@@ -1,0 +1,72 @@
+@model SubscribeVM
+@{ ViewData["Title"] = "Subscribe"; }
+
+<div class="page-header text-center">
+    <span class="hero-badge"><i class="bi bi-star-fill me-1"></i> MEMBERSHIP</span>
+    <h2 class="page-header-title" data-reveal>CHOOSE YOUR <span class="text-gradient-orange">PLAN</span></h2>
+    <p class="text-muted-fz" data-reveal>Pick the membership that fits your goals</p>
+</div>
+
+<div class="row g-4 justify-content-center">
+    @{
+        var plans = Model.AvailablePlans.OrderBy(p => p.Price).ToList();
+        for (int i = 0; i < plans.Count; i++)
+        {
+            var plan = plans[i];
+            var isPopular = plan.DurationMonths == 3;
+            var isBestValue = plan.DurationMonths == 12;
+            <div class="col-lg-4 col-md-6" data-reveal>
+                <div class="card pricing-card h-100 text-center p-4 @(isPopular ? "popular" : "") position-relative">
+                    @if (isPopular)
+                    {
+                        <span class="badge badge-accent position-absolute top-0 end-0 rounded-bottom-start-3 py-2 px-3" style="border-top-right-radius:1rem">POPULAR</span>
+                    }
+                    @if (isBestValue)
+                    {
+                        <span class="badge badge-amber position-absolute top-0 end-0 rounded-bottom-start-3 py-2 px-3" style="border-top-right-radius:1rem">BEST VALUE</span>
+                    }
+                    <h3 class="fz-display fs-2 mb-1">@plan.PlanName</h3>
+                    <p class="text-muted-fz small">@(plan.DurationMonths) month@(plan.DurationMonths > 1 ? "s" : "") membership</p>
+
+                    <div class="d-flex align-items-baseline justify-content-center gap-1 my-3">
+                        <span class="fz-display fs-1 text-gradient-orange" data-target="@plan.Price">0</span>
+                        <span class="text-muted-fz small">$</span>
+                        <span class="text-muted-fz small">/@(plan.DurationMonths)mo</span>
+                    </div>
+
+                    <span class="badge badge-muted rounded-pill mx-auto mb-4 px-4 py-2">
+                        @plan.DurationMonths month@(plan.DurationMonths > 1 ? "s" : "")
+                    </span>
+
+                    <ul class="list-unstyled d-flex flex-column gap-2 small flex-grow-1 text-start mb-4">
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Unlimited gym access</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Free fitness assessment</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Locker &amp; shower access</span></li>
+                        @if (plan.DurationMonths >= 3)
+                        {
+                            <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>1 personal training session</span></li>
+                        }
+                        @if (plan.DurationMonths >= 12)
+                        {
+                            <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Nutrition plan included</span></li>
+                            <li class="d-flex gap-2"><i class="bi bi-check-circle-fill text-accent"></i><span>Priority class booking</span></li>
+                        }
+                    </ul>
+
+                    <form asp-controller="Member" asp-action="Subscribe" method="post" class="mt-auto">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="planId" value="@plan.Id" />
+                        <div class="mb-3">
+                            <select name="method" class="form-select form-select-sm">
+                                <option value="Card">Card</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Wallet">Wallet</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn @(isPopular ? "btn-accent" : "btn-outline-fz") w-100 py-2 fw-semibold">SUBSCRIBE NOW</button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,41 @@
+@{
+    int pageIndex = (int)(ViewBag.PageIndex ?? 1);
+    int totalPages = (int)(ViewBag.TotalPages ?? 1);
+    string? search = ViewBag.Search;
+    string action = ViewBag.Action ?? "";
+    bool hasPrev = (bool)(ViewBag.HasPrevious ?? false);
+    bool hasNext = (bool)(ViewBag.HasNext ?? false);
+}
+
+@if (totalPages > 1)
+{
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <div class="text-muted-fz small">
+            Page @pageIndex of @totalPages &middot; Showing @(ViewBag.TotalCount ?? 0) result(s)
+        </div>
+        <div class="d-flex gap-2">
+            @if (hasPrev)
+            {
+                <a asp-action="@action" asp-route-page="@(pageIndex - 1)" asp-route-search="@search"
+                   class="btn btn-sm btn-outline-fz">
+                    <i class="bi bi-chevron-left"></i> Previous
+                </a>
+            }
+            else
+            {
+                <button class="btn btn-sm btn-outline-fz" disabled><i class="bi bi-chevron-left"></i> Previous</button>
+            }
+            @if (hasNext)
+            {
+                <a asp-action="@action" asp-route-page="@(pageIndex + 1)" asp-route-search="@search"
+                   class="btn btn-sm btn-outline-fz">
+                    Next <i class="bi bi-chevron-right"></i>
+                </a>
+            }
+            else
+            {
+                <button class="btn btn-sm btn-outline-fz" disabled>Next <i class="bi bi-chevron-right"></i></button>
+            }
+        </div>
+    </div>
+}

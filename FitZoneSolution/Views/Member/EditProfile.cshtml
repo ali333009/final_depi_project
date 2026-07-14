@@ -1,0 +1,46 @@
+@model EditProfileVM
+@{ ViewData["Title"] = "Edit Profile"; }
+
+<div class="page-header text-center">
+    <span class="hero-badge"><i class="bi bi-person-gear me-1"></i> PROFILE</span>
+    <h2 class="page-header-title" data-reveal>EDIT <span class="text-gradient-orange">PROFILE</span></h2>
+    <p class="text-muted-fz" data-reveal>Update your personal information</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6" data-reveal>
+        <div class="card bg-card">
+            <div class="card-body p-4">
+                <div asp-validation-summary="ModelOnly" class="text-rose-fz small mb-3"></div>
+
+                <form asp-controller="Member" asp-action="EditProfile" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label small fw-semibold">Full Name</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label small fw-semibold">Email</label>
+                        <input asp-for="Email" type="email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Phone" class="form-label small fw-semibold">Phone</label>
+                        <input asp-for="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                    </div>
+                    <hr class="border-fz my-4" />
+                    <h6 class="fw-bold mb-3 text-muted-fz">Change Password <span class="small fw-normal">(optional)</span></h6>
+                    <div class="mb-4">
+                        <label asp-for="NewPassword" class="form-label small fw-semibold">New Password</label>
+                        <input asp-for="NewPassword" type="password" class="form-control" placeholder="Leave blank to keep current" />
+                        <span asp-validation-for="NewPassword" class="text-danger small"></span>
+                        <small class="text-muted-fz">Min 8 characters.</small>
+                    </div>
+                    <button type="submit" class="btn btn-accent w-100 py-2 fw-semibold">SAVE CHANGES</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
